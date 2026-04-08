@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>750</width>
+    <height>550</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Работа с БД</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_main">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <!-- ═══ Вкладка 1: База данных ═══ -->
+      <widget class="QWidget" name="tab_db">
+       <attribute name="title">
+        <string>База данных</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="vl_db">
+        <item>
+         <layout class="QHBoxLayout" name="hl_db_buttons">
+          <item>
+           <widget class="QPushButton" name="btn_connect">
+            <property name="text">
+             <string>Соединение с БД</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_query">
+            <property name="text">
+             <string>Запрос</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_close_db">
+            <property name="text">
+             <string>Закрыть БД</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_delete_record">
+            <property name="text">
+             <string>Удалить запись</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="query_input">
+          <property name="placeholderText">
+           <string>Введите SQL запрос...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="db_status_label">
+          <property name="text">
+           <string>БД не подключена</string>
+          </property>
+          <property name="styleSheet">
+           <string>color: gray;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="result_table">
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <!-- ═══ Вкладка 2: DML SQL ═══ -->
+      <widget class="QWidget" name="tab_dml">
+       <attribute name="title">
+        <string>DML SQL</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="vl_dml">
+        <item>
+         <widget class="QLineEdit" name="table_name_input">
+          <property name="placeholderText">
+           <string>Имя таблицы</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="hl_dml">
+          <item>
+           <widget class="QTableWidget" name="columns_table">
+            <property name="columnCount">
+             <number>2</number>
+            </property>
+            <column>
+             <property name="text">
+              <string>имя</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>тип</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="vl_dml_btns">
+            <item>
+             <widget class="QPushButton" name="btn_add_col">
+              <property name="text">
+               <string>Добавить</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_del_col">
+              <property name="text">
+               <string>Удалить</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="spacer_dml">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="dml_status_label">
+          <property name="text">
+           <string></string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="hl_dml_actions">
+          <item>
+           <widget class="QPushButton" name="btn_create_table">
+            <property name="text">
+             <string>Создать таблицу</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_drop_table">
+            <property name="text">
+             <string>Удалить таблицу</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="spacer_dml2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <!-- ═══ Вкладка 3: Вставка значений ═══ -->
+      <widget class="QWidget" name="tab_insert">
+       <attribute name="title">
+        <string>Вставка значений</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="vl_insert">
+        <item>
+         <layout class="QHBoxLayout" name="hl_insert_top">
+          <item>
+           <widget class="QLabel" name="label_sel_table">
+            <property name="text">
+             <string>Таблица:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox_tables">
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_get_tables">
+            <property name="text">
+             <string>Получить таблицы БД</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="sp_insert">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="insert_table">
+          <property name="columnCount">
+           <number>3</number>
+          </property>
+          <column>
+           <property name="text">
+            <string>имя</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>значение</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>тип</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_insert_values">
+          <property name="text">
+           <string>Вставка значений</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <!-- ═══ Вкладка 4: Управление ═══ -->
+      <widget class="QWidget" name="tab_manage">
+       <attribute name="title">
+        <string>Управление</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="vl_manage">
+        <item>
+         <layout class="QHBoxLayout" name="hl_tables">
+          <item>
+           <widget class="QLabel" name="label_tables_bd">
+            <property name="text">
+             <string>Таблицы БД</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox_manage">
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_get_tables_manage">
+          <property name="text">
+           <string>Получить таблицы БД</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="hl_actions">
+          <item>
+           <widget class="QLabel" name="label_actions">
+            <property name="text">
+             <string>Действия</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox_actions">
+            <item>
+             <property name="text">
+              <string>Удалить таблицу</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Показать данные</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_sql">
+          <property name="text">
+           <string>SQL</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="sql_text">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="placeholderText">
+           <string>SQL запрос генерируется автоматически или введите вручную...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_execute">
+          <property name="text">
+           <string>Выполнить</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="manage_result_table">
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>750</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
