@@ -5,7 +5,7 @@ metadata:
   namespace: default
 data:
   REDIS_URL: "redis://redis-service:6379"
-  DATABASE_URL: "sqlite+aiosqlite:///./jobs.db"
+  DATABASE_URL: "sqlite+aiosqlite:////data/jobs.db"
   SMTP_HOST: "smtp.yandex.ru"
   SMTP_PORT: "465"
   METRICS_PORT: "9090"
