@@ -1,0 +1,35 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Component Diagram — API Gateway (Batch Email Service)
+
+Container_Ext(user, "Клиент", "HTTP-клиент или браузер")
+Container_Ext(redis, "Redis Streams", "Очередь заданий")
+Container_Ext(postgres, "PostgreSQL", "База данных")
+
+Container_Boundary(api_gateway, "API Gateway (FastAPI)") {
+    Component(router, "Router / Endpoints", "FastAPI APIRouter", "Обрабатывает маршруты:\nPOST /jobs\nGET /jobs/{id}\nGET /jobs\nPOST /jobs/{id}/cancel")
+
+    Component(job_service, "JobService", "Python class", "Бизнес-логика:\nсоздание задания,\nвалидация списка адресов,\nпроверка лимитов.")
+
+    Component(queue_publisher, "QueuePublisher", "Python class", "Публикует сообщение\nв Redis Stream:\nкодирует payload,\nобрабатывает ошибки соединения.")
+
+    Component(db_repo, "JobRepository", "SQLAlchemy async", "CRUD-операции с заданиями\nи получателями в PostgreSQL.\nАсинхронные сессии.")
+
+    Component(auth_middleware, "Auth Middleware", "FastAPI Middleware", "Проверяет API-ключ\nв заголовке X-API-Key.\nОтвечает 401 при ошибке.")
+
+    Component(metrics, "Metrics Endpoint", "/metrics (Prometheus)", "Экспортирует счётчики:\nhttp_requests_total,\njobs_created_total,\nrequest_duration_seconds.")
+}
+
+Rel(user, auth_middleware, "Все запросы проходят\nчерез middleware", "HTTP")
+Rel(auth_middleware, router, "Передаёт запрос\nпосле авторизации")
+Rel(router, job_service, "Вызывает бизнес-логику")
+Rel(job_service, queue_publisher, "Публикует задание\nв очередь")
+Rel(job_service, db_repo, "Сохраняет / читает данные")
+Rel(queue_publisher, redis, "Публикует в stream", "TCP/6379")
+Rel(db_repo, postgres, "SQL-запросы", "TCP/5432")
+Rel(user, metrics, "GET /metrics", "HTTP")
+
+@enduml

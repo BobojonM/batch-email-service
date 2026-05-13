@@ -1,0 +1,29 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Container Diagram — Batch Email Service
+
+Person(user, "Пользователь / Администратор", "Управляет заданиями\nна рассылку")
+
+System_Boundary(batch_email, "Batch Email Service") {
+    Container(api_gateway, "API Gateway", "Python / FastAPI", "Принимает HTTP-запросы:\nсоздание заданий, статус,\nсписок рассылки.\nВалидирует входные данные.")
+
+    Container(email_worker, "Email Worker", "Python / asyncio", "Забирает задания из очереди,\nформирует и отправляет письма\nчерез SMTP. Обновляет статусы\nв БД.")
+
+    ContainerDb(redis, "Redis", "Redis Streams", "Очередь заданий на отправку.\nОбеспечивает асинхронную\nпередачу задач от API к воркеру.")
+
+    ContainerDb(postgres, "PostgreSQL", "Реляционная БД", "Хранит: задания (jobs),\nадресатов (recipients),\nлог доставки (delivery_log).")
+}
+
+System_Ext(smtp, "SMTP-сервер\n(Yandex / Gmail)", "Внешняя система\nдоставки email")
+
+Rel(user, api_gateway, "REST API запросы", "HTTPS/JSON")
+Rel(api_gateway, redis, "Публикует задание\nв очередь", "TCP/6379")
+Rel(api_gateway, postgres, "Сохраняет задание,\nчитает статусы", "TCP/5432")
+Rel(email_worker, redis, "Подписывается на очередь,\nзабирает задания", "TCP/6379")
+Rel(email_worker, postgres, "Обновляет статус\nдоставки", "TCP/5432")
+Rel(email_worker, smtp, "Отправляет письма", "SMTPS/465")
+
+@enduml

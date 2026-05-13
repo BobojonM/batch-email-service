@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: email-worker-service
+  namespace: default
+spec:
+  selector:
+    app: email-worker
+  ports:
+    - port: 9090
+      targetPort: 9090
+  type: ClusterIP

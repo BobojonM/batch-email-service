@@ -1,0 +1,21 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title System Context — Batch Email Service
+
+Person(user, "Пользователь / Администратор", "Отправляет задания на\nпакетную рассылку email")
+Person(recipient, "Получатель письма", "Конечный адресат,\nполучающий email")
+
+System(batch_email, "Batch Email Service", "Принимает задания на рассылку,\nставит письма в очередь и\nасинхронно доставляет их получателям")
+
+System_Ext(smtp, "SMTP-сервер\n(Yandex / Gmail)", "Внешний сервис для\nфинальной доставки email")
+System_Ext(db, "PostgreSQL", "Хранит задания, статусы\nдоставки и лог отправок")
+
+Rel(user, batch_email, "POST /jobs — создаёт задание\nGET /jobs/{id} — проверяет статус", "HTTPS/REST")
+Rel(batch_email, smtp, "Отправляет письма через\nSMTP-протокол", "SMTP/TLS")
+Rel(batch_email, db, "Читает и пишет\nзадания и статусы", "TCP/5432")
+Rel(batch_email, recipient, "Доставляет email", "SMTP")
+
+@enduml
